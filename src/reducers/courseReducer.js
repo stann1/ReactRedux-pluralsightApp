@@ -1,11 +1,17 @@
 import * as types from '../actions/actionTypes';
+import initialState from './initialState';
 
-export default function courseReducer(state = [], action){
+export default function courseReducer(state = initialState.courses, action){
     switch (action.type) {
-        case types.CREATE_COURSE:
-            return [...state, Object.assign({}, action.course)];        // spreads the state, makes a deep copy and replaces its action property with the new value
+        case types.CREATE_COURSE_SUCCESS:
+            return [...state, Object.assign({}, action.course)];        // spreads the state, same as typing all state properties by hand
         case types.LOAD_COURSES_SUCCESS:
             return action.courses;
+        case types.UPDATE_COURSE_SUCCESS:
+            return [
+                ...state.filter(course => course.id != action.course.id),
+                Object.assign({}, action.course)
+                ];
         default:
             return state;
     }
